@@ -4,6 +4,8 @@ scikit-learn
 xgboost
 lightgbm
 jiwer
+jellyfish
+matplotlib
+joblib
 python-dotenv
 anthropic
-jellyfish
