@@ -2,8 +2,8 @@ import json
 import re
 from pathlib import Path
 
-TRANSCRIPT_DIR = Path("/Users/rashi/Downloads/Data/Clean Transcripts")
-AUDIO_DIR = Path("/Users/rashi/Downloads/Data/Audio Recordings")
+TRANSCRIPT_DIR = Path("data/raw_fareez/Clean Transcripts")
+AUDIO_DIR = Path("data/raw_fareez/Audio Recordings")
 TURNS_PATH = Path("data/processed/turns.jsonl")
 
 TURN_PATTERN = re.compile(r"^([DP])\s*[:;]\s*(.*)$", re.IGNORECASE)

@@ -117,7 +117,7 @@ for the final report's methodology/limitations sections.
 
 | Source | Tier 1 | Tier 2 | Tier 3 | Tier3/Tier1 |
 |---|---|---|---|---|
-| ACI-Bench + TTS (synthetic, Whisper-base) | 12.6% | 67.4% | 90.2% | 7.2x |
+| ACI-Bench + TTS (synthetic, Whisper-base) | 12.6% | 62.05% (updated, see below) | 90.2% | 7.2x |
 | Fareez real audio (Whisper-base, n=60/60) | 9.55% | 16.03% | 54.88% | 5.7x |
 | ACI-Bench real production ASR | 2.23% | 1.75% | 1.33% | 0.6x (inverted) |
 
@@ -130,6 +130,27 @@ for the final report's methodology/limitations sections.
   errors). Tier 3: 54.88% (164 tokens, 90 errors). Tier 2/3 token counts are
   still small (131, 164) — no confidence interval computed yet; treat as
   directional pending a bootstrap.
+- The 60 fareez encounters were NOT randomly sampled: selected by ranking
+  eligible Tier-2/3-containing encounters by distinct glossary term count,
+  top 60 taken (see `scratch/select_fareez_60.py`).
+- UPDATE (2026-09-23, later same day): the ACI-Bench+TTS Tier 2 cell above was
+  originally 67.4%, computed before the `ok`/`okay` `normalize()` fix.
+  `data/processed/word_level_labels.csv` has now been regenerated (207
+  encounters, fareez excluded) with the patched normalize() and the table
+  updated in place. Result: Tier 1: 12.54% (−0.09pp, unaffected within
+  rounding), Tier 2: **62.05% (−5.30pp)**, Tier 3: 90.17% (byte-identical,
+  946/946 tokens) — only the Tier 2 cell and its row are affected; Tier 1,
+  Tier 3, and the 7.2x Tier3/Tier1 ratio (90.2/12.6, unchanged by a Tier-2
+  move) are confirmed unaffected.
+- Why Tier 2's token count moved by 42 even though `ok`/`okay` aren't
+  glossary terms: this is a sequence-alignment boundary-shift effect, not a
+  reclassification of specific words. `normalize()` feeds into the strings
+  jiwer aligns (`ref_text`/`hyp_text`), so fixing the `ok`/`okay` mismatch
+  changes where jiwer places match/substitution/deletion boundaries nearby;
+  that shifts which gold-word *indices* land in which alignment chunk,
+  which changes which gold words get counted as Tier 1 vs. Tier 2 — the
+  glossary lookup itself (on `gold_norm`) is unchanged, only the alignment
+  feeding it moved.
 
 ## 2026-09-23 — Ablation: uncertainty classifier without the glossary-tier feature
 
@@ -166,6 +187,17 @@ the tier feature inside the classifier:
   removed). The original `models/uncertainty_xgb.joblib` and its stored
   results are unchanged — this ablation loaded it read-only for comparison
   and did not retrain or overwrite it.
+- UPDATE (2026-09-23, later same day): this ablation was computed against
+  the stale pre-`normalize()`-fix `word_level_labels.csv`. Rerun against
+  the regenerated file: (a)/(b-old)/(c)/(d-old) are byte-identical (they
+  depend only on `confidence`/`tier_whisper`/`word_len`, unaffected by
+  realignment, and the pre-existing model). (b-new) moved to 33.61% /
+  51.45% / 71.78% (5/10/20%, was 32.78% / 51.04% / 71.78%); (d-new) moved
+  to 39.83% / 55.19% / 73.86% (was 36.93% / 55.60% / 74.27%) — the
+  retrained no-tier model shifted slightly because its training labels
+  came from the corrected alignment. Bootstrap (d-new vs. a) at 10%:
+  +8.17pp, 95% CI [2.39pp, 13.94pp] (was +8.02pp, [2.23pp, 14.11pp]) —
+  still excludes zero, CI tightened slightly, no change in conclusion.
 
 ## 2026-09-23 — Bootstrap 95% CI on Fareez per-tier error rates (n=60)
 
@@ -196,3 +228,50 @@ Tier 1=1.0 and Tier 2=3.25 fixed, using the tier-removed classifier
   +8.37pp, tightest 95% CI [1.78, 13.31]pp.
 - The current weight (4.25) sits in the flat plateau, not tuned to an edge
   case — the result is robust to this hyperparameter choice.
+- UPDATE (2026-09-23, later same day): rerun against the regenerated
+  `word_level_labels.csv` (patched `normalize()`) and the freshly-retrained
+  `uncertainty_xgb_no_tier.joblib`. Recall @10% across the sweep: 2.0→54.36%,
+  3.0→54.77%, 4.25→55.19%, 5.5→55.19%, 7.0→55.60%, 8.0→55.60% (was 54.77% /
+  55.60% / 55.60% / 55.60% / 55.60% / 55.60%) — the plateau shape is
+  preserved, just shifted down by ~0.4pp at the middle of the range. All 6
+  bootstrap CIs still exclude zero: mean differences now range +7.46pp to
+  +8.54pp, tightest 95% CI [1.90, 13.08]pp (was +7.32pp to +8.37pp,
+  [1.78, 13.31]pp) — no change in conclusion.
+
+## 2026-09-23 — 5-fold cross-validation replaces single 80/20 split (tier-free classifier)
+
+`StratifiedGroupKFold`, 5 splits, seed 42, encounter-grouped (no encounter spans
+train/test within a fold). Each fold retrains a temporary tier-free classifier
+(same architecture as `uncertainty_xgb_no_tier.joblib`); nothing saved to
+`models/` — all 5 fold models discarded after use.
+
+| Metric | Mean | Std |
+|---|---|---|
+| Critical recall, risk_score @5% | 42.92% | 1.11% |
+| Critical recall, risk_score @10% | 58.29% | 2.70% |
+| Critical recall, risk_score @20% | 77.25% | 2.90% |
+| Critical recall, raw_confidence @5% | 20.81% | 2.15% |
+| Critical recall, raw_confidence @10% | 47.27% | 2.41% |
+| Critical recall, raw_confidence @20% | 75.99% | 3.20% |
+| ROC-AUC | 0.8534 | 0.0024 |
+| Gap @10% (risk_score − raw_confidence) | +11.02pp | ±2.84pp |
+
+- Per-fold gap @10%: 13.93pp, 13.99pp, 8.04pp, 8.64pp, 10.50pp — all positive,
+  range 8.04-13.99pp.
+- 5-fold mean gap (+11.02pp) is higher than the single 80/20 split's result
+  (+8.02pp from the earlier tier-feature ablation) — the single split wasn't
+  an outlier, it just landed toward the low end of the fold distribution.
+- ROC-AUC is very stable across folds (std 0.0024) — the extra variance in
+  the recall gap comes from the small Tier 2/3 critical-error denominators,
+  not from classifier instability.
+- UPDATE (2026-09-23, later same day): rerun against the regenerated
+  `word_level_labels.csv` (patched `normalize()`), same seed 42. New means:
+  risk_score recall 43.24%/59.09%/77.52% (5/10/20%, was 42.92%/58.29%/77.25%),
+  raw_confidence recall 20.74%/46.93%/76.07% (was 20.81%/47.27%/75.99%),
+  ROC-AUC 0.8525 ± 0.0040 (was 0.8534 ± 0.0024). **Gap @10%: +12.16pp ±
+  1.45pp (was +11.02pp ± 2.84pp)** — per-fold gaps now 10.81-14.35pp (was
+  8.04-13.99pp), all still positive. The gap got larger and the std got
+  tighter, not weaker — no change in conclusion, if anything a stronger
+  result. Note: `StratifiedGroupKFold` fold membership shifted slightly
+  between runs even at the same seed, because it stratifies on `is_error`,
+  which changed under the corrected alignment — expected, not a bug.
