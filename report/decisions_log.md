@@ -275,3 +275,69 @@ train/test within a fold). Each fold retrains a temporary tier-free classifier
   result. Note: `StratifiedGroupKFold` fold membership shifted slightly
   between runs even at the same seed, because it stratifies on `is_error`,
   which changed under the corrected alignment — expected, not a bug.
+
+## 2026-09-23 — Precision at flagging budgets (alongside existing recall)
+
+Precision @ budget = critical errors caught among flagged words / total words
+flagged at that budget. Recall as before (critical errors caught / total
+critical errors). "Critical" = gold Tier 2/3. Same `uncertainty_xgb_no_tier.joblib`
+(read-only) used for both datasets so risk_score is directly comparable.
+ACI-Bench = 80/20 split test set (48,921 rows); Fareez = all n=60 encounters
+(88,989 scorable rows — deletions excluded, no output word to attach a score to,
+same caveat as the original classifier).
+
+**ACI-Bench:**
+
+| Ranking | Budget | Precision | Recall |
+|---|---|---|---|
+| raw_confidence | 5% | 1.43% | 14.52% |
+| raw_confidence | 10% | 2.33% | 47.30% |
+| raw_confidence | 20% | 1.79% | 72.61% |
+| risk_score | 5% | 3.92% | 39.83% |
+| risk_score | 10% | 2.72% | 55.19% |
+| risk_score | 20% | 1.82% | 73.86% |
+| random (chance) | 5% | 0.49% | 5.00% |
+| random (chance) | 10% | 0.49% | 10.00% |
+| random (chance) | 20% | 0.49% | 20.00% |
+
+**Fareez:**
+
+| Ranking | Budget | Precision | Recall |
+|---|---|---|---|
+| raw_confidence | 5% | 0.67% | 29.41% |
+| raw_confidence | 10% | 0.66% | 57.84% |
+| raw_confidence | 20% | 0.46% | 80.39% |
+| risk_score | 5% | 1.33% | 57.84% |
+| risk_score | 10% | 0.78% | 67.65% |
+| risk_score | 20% | 0.48% | 84.31% |
+| random (chance) | 5% | 0.11% | 5.00% |
+| random (chance) | 10% | 0.11% | 10.00% |
+| random (chance) | 20% | 0.11% | 20.00% |
+
+Random baseline: precision under uniform random flagging equals the dataset's
+overall critical-error rate (`n_critical_errors / n_total_rows`) and is
+constant across budgets by construction — a random sample's expected hit rate
+doesn't depend on sample size. Recall under random flagging equals the budget
+fraction itself, also by construction (expected fraction of critical errors
+caught = fraction of words flagged). ACI-Bench: 241/48,921 = 0.49%. Fareez:
+102/88,989 = 0.11%.
+
+- risk_score beats raw_confidence on precision at every budget on both
+  datasets — most dramatically at 5% (ACI-Bench 3.92% vs. 1.43%, ~2.7x;
+  Fareez 1.33% vs. 0.67%, ~2x).
+- Precision is low in absolute terms everywhere (under 4%) because critical
+  (Tier 2/3) errors are a small fraction of all flagged words at these
+  budgets — expected given Tier 2/3 tokens are themselves rare (241 critical
+  errors in 48,921 ACI-Bench test rows; 102 in 88,989 Fareez rows). Recall
+  is the more informative metric for this application, precision is reported
+  for completeness.
+- Against the random floor, both rankings clear it by a wide margin on
+  precision: raw_confidence is ~3-5x chance, risk_score is ~4-8x chance
+  (ACI-Bench 5%: 3.92% vs. 0.49% floor, ~8x; Fareez 5%: 1.33% vs. 0.11%
+  floor, ~12x). The absolute precision numbers look small in isolation, but
+  relative to how rare critical errors actually are in each dataset, both
+  rankings — and risk_score in particular — are doing substantial work above
+  chance.
+- Fareez precision is consistently lower than ACI-Bench precision at the same
+  budget (e.g. 10%: 0.78% vs. 2.72%) — consistent with Fareez's much lower
+  overall critical-error density relative to its total token count.
