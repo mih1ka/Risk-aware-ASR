@@ -16,20 +16,19 @@ def load_glossary():
 
 
 def normalize(word):
-    return re.sub(r"[^a-z0-9']", "", word.lower())
+    stripped = re.sub(r"[^a-z0-9']", "", word.lower())
+    if stripped == "okay":
+        return "ok"
+    return stripped
 
 
 def tokenize(text):
     return [w for w in text.split() if re.search(r"[a-zA-Z0-9]", w)]
 
 
-def main():
-    glossary = load_glossary()
+def align_files(json_files, glossary):
     rows = []
     per_encounter_wer = []
-
-    json_files = sorted(WHISPER_DIR.glob("*.json"))
-    print(f"Found {len(json_files)} encounter files")
 
     for jf in json_files:
         data = json.loads(jf.read_text())
@@ -103,12 +102,21 @@ def main():
 
         per_encounter_wer.append({"encounter_id": eid, "wer": out.wer})
 
+    return pd.DataFrame(rows), pd.DataFrame(per_encounter_wer)
+
+
+def main():
+    glossary = load_glossary()
+
+    json_files = sorted(WHISPER_DIR.glob("*.json"))
+    print(f"Found {len(json_files)} encounter files")
+
+    df, wer_df = align_files(json_files, glossary)
+
     OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    df = pd.DataFrame(rows)
     df.to_csv(OUT_PATH, index=False)
     print(f"Saved {len(df)} word-level rows to {OUT_PATH}")
 
-    wer_df = pd.DataFrame(per_encounter_wer)
     print(f"Mean per-encounter WER: {wer_df['wer'].mean():.4f}")
 
     gold_rows = df[df["gold_word"].notna()]
