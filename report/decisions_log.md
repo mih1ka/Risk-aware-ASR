@@ -67,8 +67,8 @@ for the final report's methodology/limitations sections.
 ## Deliverable 1 — Reference-free uncertainty estimation
 - Features (all reference-free, available at inference): Whisper word confidence, criticality tier of Whisper's own output word, word length
 - Encounter-level train/test split (80/20, GroupShuffleSplit) to prevent leakage
-- Baselines: Logistic Regression (ROC-AUC 0.858), Random Forest (ROC-AUC 0.780, underperforms — not tuned further), XGBoost (ROC-AUC 0.856)
-- Selected XGBoost as primary model: prioritizes recall (0.807) over raw accuracy, appropriate for a safety application where missing an error is costlier than a false alarm
+- Baselines: Logistic Regression (ROC-AUC 0.858) [not retrained after the normalize() fix; figures predate it], Random Forest (ROC-AUC 0.780, underperforms — not tuned further) [not retrained after the normalize() fix; figures predate it], XGBoost (ROC-AUC 0.856)
+- Selected XGBoost as primary model: prioritizes recall (0.807) over raw accuracy, appropriate for a safety application where missing an error is costlier than a false alarm [2026-10-05: after retrain on corrected labels, ROC-AUC 0.856, recall at 0.5 cutoff 0.810]
 
 ## Deliverable 2 — Risk-scoring mechanism
 - Risk Score = Learned Uncertainty (XGBoost predicted probability) × Domain Criticality weight
