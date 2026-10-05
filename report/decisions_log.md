@@ -137,11 +137,13 @@ for the final report's methodology/limitations sections.
   originally 67.4%, computed before the `ok`/`okay` `normalize()` fix.
   `data/processed/word_level_labels.csv` has now been regenerated (207
   encounters, fareez excluded) with the patched normalize() and the table
-  updated in place. Result: Tier 1: 12.54% (−0.09pp, unaffected within
-  rounding), Tier 2: **62.05% (−5.30pp)**, Tier 3: 90.17% (byte-identical,
-  946/946 tokens) — only the Tier 2 cell and its row are affected; Tier 1,
-  Tier 3, and the 7.2x Tier3/Tier1 ratio (90.2/12.6, unchanged by a Tier-2
-  move) are confirmed unaffected.
+  updated in place. Result: Tier 1: 12.54% (−0.09pp; rounds to 12.5, not
+  12.6 — the table's 12.6% cell predates this correction), Tier 2:
+  **62.05% (−5.30pp)**, Tier 3: 90.17% (byte-identical, 946/946 tokens).
+  Tier 2 is the material change; Tier 1 moved 0.09pp (12.6 → 12.5 at one
+  decimal); Tier 3 is unaffected. The Tier3/Tier1 ratio is still 7.2x
+  (90.17/12.54 = 7.19). [Corrected 2026-10-05: this line previously said
+  Tier 1 was "unaffected within rounding".]
 - Why Tier 2's token count moved by 42 even though `ok`/`okay` aren't
   glossary terms: this is a sequence-alignment boundary-shift effect, not a
   reclassification of specific words. `normalize()` feeds into the strings
@@ -461,3 +463,52 @@ Scorable rows: 60 selected 88,989; 212 remaining 263,484.
 - Not tested for significance. Counts are small (102 and 143 critical
   errors), so part of the ~7-8 pp gap may be noise. An encounter-level
   bootstrap on the gap would settle it.
+
+## 2026-10-05 — KNOWN ISSUE, NOT YET FIXED: production-ASR row skipped the ok/okay normalize() fix
+
+`src/eval/validate_real_asr.py:32` defines its own `normalize()`
+(`re.sub(r"[^a-z0-9']", "", str(word).lower())`) instead of importing the
+patched one from `align_and_label.py`, so it does not map `okay` → `ok`.
+The production-ASR row of the 2026-09-23 three-way tier comparison
+(Tier 1/2/3: 2.23% / 1.75% / 1.33%) therefore has NOT gone through the same
+correction as the ACI-Bench+TTS and Fareez rows. Its values, and its 0.6x
+(inverted) Tier3/Tier1 ratio, may shift once corrected — the ACI-Bench+TTS
+Tier 2 cell moved 5.30pp from the same fix via alignment boundary shifts.
+`fig5_synthetic_vs_real.png` hardcodes these production-ASR values
+(2.2 / 1.8 / 1.3) and inherits the issue.
+
+Next priority after the current push: apply the patched normalize() in
+`validate_real_asr.py`, re-run it, and update the three-way table and fig5.
+
+## 2026-10-05 — With-tier model retrained on normalize()-corrected labels (side effect)
+
+`models/uncertainty_xgb.joblib` (the with-tier-feature classifier) was
+retrained on the normalize()-corrected `word_level_labels.csv` as a side
+effect of regenerating `data/processed/risk_scores_test.csv` with
+`src/model/risk_score.py`, which trains and saves the model before scoring.
+Both files dated from 2026-09-19, before the 2026-09-23 ok/okay fix; the
+2026-09-23 "rerun all downstream results" pass did not re-run
+`risk_score.py`. Same features, split (GroupShuffleSplit, seed 42) and
+hyperparameters; only the labels changed. Test set still 48,921 rows,
+241 critical (Tier 2/3) errors.
+
+ACI-Bench test-set critical-error recall, old → new:
+
+| Ranking | 5% | 10% | 20% |
+|---|---|---|---|
+| risk_score | 39.8% → 39.0% | 57.7% → 57.3% | 75.9% → 74.3% |
+| uncertainty only | 36.1% → 36.1% | 54.4% → 53.9% | 73.9% → 72.2% |
+
+- risk_score still beats uncertainty-only at every budget (+2.9, +3.4,
+  +2.1 pp new).
+- Classifier ROC-AUC unchanged at 0.856; recall at the 0.5 probability cutoff
+  0.806 → 0.810.
+- The 90th percentile of held-out risk scores moved from 0.8393 to 0.8355.
+  `FLAG_RISK_THRESHOLD = 0.839` in `risk_pipeline.py` was left unchanged; it
+  now flags 9.78% of held-out words instead of ~10%.
+- The with-tier rows in the 2026-09-23 ablation entry ("(b) learned
+  uncertainty — with tier feature (original)" and "(d) risk score — with
+  tier feature (original)") were computed on the old model and have not
+  been re-run.
+- All five figures were redrawn (fig1/fig5 also pick up the corrected
+  ACI-Bench+TTS Tier 1/2/3 values 12.54 / 62.05 / 90.17).
