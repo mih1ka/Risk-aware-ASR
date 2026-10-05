@@ -4,3 +4,4 @@ __pycache__/
 .env
 data/audio/
 data/whisper_out/
+.DS_Store
