@@ -41,7 +41,7 @@ def style_axes(ax):
 
 def fig_wer_by_tier():
     tiers = ["Tier 1\n(everyday)", "Tier 2\n(clinical term)", "Tier 3\n(drug/dosage)"]
-    rates = [12.6, 67.4, 90.2]
+    rates = [12.54, 62.05, 90.17]
     fig, ax = plt.subplots(figsize=(6, 4.5))
     bars = ax.bar(tiers, rates, color=TIER_RAMP, width=0.6)
     for bar, rate in zip(bars, rates):
@@ -167,7 +167,7 @@ def fig_ablation():
 
 def fig_synthetic_vs_real():
     tiers = ["Tier 1", "Tier 2", "Tier 3"]
-    synthetic = [12.6, 67.4, 90.2]
+    synthetic = [12.54, 62.05, 90.17]
     real = [2.2, 1.8, 1.3]
     x = np.arange(len(tiers))
     width = 0.32

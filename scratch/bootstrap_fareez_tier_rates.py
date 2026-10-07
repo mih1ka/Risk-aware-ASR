@@ -1,8 +1,8 @@
 """
 Throwaway diagnostic — not part of the reproducible pipeline.
 
-Bootstrap 95% CI on the fareez per-tier error rates (n=60 encounters),
-same method as src/model/bootstrap_significance.py: encounter-level
+Bootstrap 95% CI on the fareez per-tier error rates (all encounters in the
+labels file; count printed at runtime — n=272 as of 2026-09-25), same method as src/model/bootstrap_significance.py: encounter-level
 cluster resampling (not word-level, to respect within-encounter
 correlation), 2000 resamples, seed 42. Read-only against
 data/processed/word_level_labels_fareez.csv — writes nothing.
