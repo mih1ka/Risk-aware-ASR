@@ -17,7 +17,7 @@ Full methodology, decisions, and dated findings are in `report/decisions_log.md`
 ## Headline results
 
 - Tier 3 (drug/dosage) terms are mistranscribed **90.2%** of the time by a
-  general-purpose Whisper-base pipeline, vs. **12.6%** for everyday words
+  general-purpose Whisper-base pipeline, vs. **12.5%** for everyday words
   (see `report/figures/fig1_wer_by_tier.png`)
 - Reference-free classifiers (confidence + criticality + word length) predict
   transcription errors with ROC-AUC ~0.86 with no access to the gold transcript

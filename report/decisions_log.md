@@ -67,8 +67,8 @@ for the final report's methodology/limitations sections.
 ## Deliverable 1 — Reference-free uncertainty estimation
 - Features (all reference-free, available at inference): Whisper word confidence, criticality tier of Whisper's own output word, word length
 - Encounter-level train/test split (80/20, GroupShuffleSplit) to prevent leakage
-- Baselines: Logistic Regression (ROC-AUC 0.858), Random Forest (ROC-AUC 0.780, underperforms — not tuned further), XGBoost (ROC-AUC 0.856)
-- Selected XGBoost as primary model: prioritizes recall (0.807) over raw accuracy, appropriate for a safety application where missing an error is costlier than a false alarm
+- Baselines: Logistic Regression (ROC-AUC 0.858) [not retrained after the normalize() fix; figures predate it], Random Forest (ROC-AUC 0.780, underperforms — not tuned further) [not retrained after the normalize() fix; figures predate it], XGBoost (ROC-AUC 0.856)
+- Selected XGBoost as primary model: prioritizes recall (0.807) over raw accuracy, appropriate for a safety application where missing an error is costlier than a false alarm [2026-10-05: after retrain on corrected labels, ROC-AUC 0.856, recall at 0.5 cutoff 0.810]
 
 ## Deliverable 2 — Risk-scoring mechanism
 - Risk Score = Learned Uncertainty (XGBoost predicted probability) × Domain Criticality weight
@@ -137,11 +137,13 @@ for the final report's methodology/limitations sections.
   originally 67.4%, computed before the `ok`/`okay` `normalize()` fix.
   `data/processed/word_level_labels.csv` has now been regenerated (207
   encounters, fareez excluded) with the patched normalize() and the table
-  updated in place. Result: Tier 1: 12.54% (−0.09pp, unaffected within
-  rounding), Tier 2: **62.05% (−5.30pp)**, Tier 3: 90.17% (byte-identical,
-  946/946 tokens) — only the Tier 2 cell and its row are affected; Tier 1,
-  Tier 3, and the 7.2x Tier3/Tier1 ratio (90.2/12.6, unchanged by a Tier-2
-  move) are confirmed unaffected.
+  updated in place. Result: Tier 1: 12.54% (−0.09pp; rounds to 12.5, not
+  12.6 — the table's 12.6% cell predates this correction), Tier 2:
+  **62.05% (−5.30pp)**, Tier 3: 90.17% (byte-identical, 946/946 tokens).
+  Tier 2 is the material change; Tier 1 moved 0.09pp (12.6 → 12.5 at one
+  decimal); Tier 3 is unaffected. The Tier3/Tier1 ratio is still 7.2x
+  (90.17/12.54 = 7.19). [Corrected 2026-10-05: this line previously said
+  Tier 1 was "unaffected within rounding".]
 - Why Tier 2's token count moved by 42 even though `ok`/`okay` aren't
   glossary terms: this is a sequence-alignment boundary-shift effect, not a
   reclassification of specific words. `normalize()` feeds into the strings
@@ -151,6 +153,12 @@ for the final report's methodology/limitations sections.
   which changes which gold words get counted as Tier 1 vs. Tier 2 — the
   glossary lookup itself (on `gold_norm`) is unchanged, only the alignment
   feeding it moved.
+- UPDATE (2026-09-25): the Fareez row above is NOT final. "n=60/60,
+  complete" referred to the selected 60-encounter subset only. Superseded by
+  the full n=272 run — see "2026-09-25 — Full Fareez run (n=272) vs. n=60
+  selection" below: Tier 1 10.24%, Tier 2 24.33%, Tier 3 55.04% (Tier3/Tier1
+  ≈ 5.4x, was 5.7x), pooled WER 13.92%, with bootstrap CIs. The table above is
+  left as originally recorded.
 
 ## 2026-09-23 — Ablation: uncertainty classifier without the glossary-tier feature
 
@@ -341,3 +349,166 @@ caught = fraction of words flagged). ACI-Bench: 241/48,921 = 0.49%. Fareez:
 - Fareez precision is consistently lower than ACI-Bench precision at the same
   budget (e.g. 10%: 0.78% vs. 2.72%) — consistent with Fareez's much lower
   overall critical-error density relative to its total token count.
+## 2026-09-25 — Full Fareez run (n=272) vs. n=60 selection
+
+Re-ran `align_and_label.py`'s real `align_files()` (imported, not
+reimplemented) across all 272 fareez encounters now in `whisper_out/`, via
+`scratch/run_align_fareez272.py`. Overwrote
+`data/processed/word_level_labels_fareez.csv` (370,461 rows). Same 190-term
+glossary, ok/okay normalize fix active; every whisper_out file's
+`original_text` verified identical to `scratch/fareez_272_gold_text.json`.
+Bootstrap CIs use the same method as the n=60 entry (encounter-level cluster
+resampling, 2000 resamples, seed 42). ACI-Bench stored results and the
+glossary untouched (checksums unchanged).
+
+| Metric | n=60 | n=272 | Δ |
+|---|---|---|---|
+| Pooled WER | 12.84% | 13.92% | +1.08 pp |
+| Tier 1 error rate [95% CI] | 9.55% [8.87, 10.26] | 10.24% [9.88, 10.59] | +0.69 pp |
+| Tier 1 tokens (errors) | 90,333 (8,626) | 356,873 (36,538) | |
+| Tier 2 error rate [95% CI] | 16.03% [8.26, 25.18] | 24.33% [16.93, 31.96] | +8.30 pp |
+| Tier 2 tokens (errors) | 131 (21) | 263 (64) | |
+| Tier 3 error rate [95% CI] | 54.88% [47.53, 63.13] | 55.04% [49.73, 60.33] | +0.16 pp |
+| Tier 3 tokens (errors) | 164 (90) | 367 (202) | |
+
+- Tier 3 held steady (~55%) and its CI narrowed from ~15.6 pp to ~10.6 pp
+  wide as tokens more than doubled (164 → 367).
+- Tier 2 rose 8.3 pp. Caveat: the n=60 set was not a random sample — it was
+  selected to prioritize encounters containing Tier 2/3 terms (see
+  `scratch/select_fareez_60.py`), and it is a subset of the 272, so the two
+  estimates are neither independent nor drawn the same way. Interpret as the
+  n=60 figure having been an unrepresentative estimate, not as a significant
+  shift. Tier 2 remains the least-pinned tier (263 tokens, CI ~15 pp wide).
+- Tier ordering remains non-overlapping: Tier 1 CI upper (10.59%) < Tier 2
+  CI lower (16.93%); Tier 2 CI upper (31.96%) < Tier 3 CI lower (49.73%).
+- Specialty mix of the 272 (encounter_id prefix): RES 213, MSK 46, GAS 6,
+  CAR 5, DER 1, GEN 1 — full-set rates are dominated by RES.
+- Backup: `scratch/word_level_labels_fareez_n60_backup.csv` is a copy of the
+  n=60 labels file taken before the overwrite, kept so the n=60 numbers
+  (and the analyses above that were computed on them) remain reproducible.
+- Earlier Fareez figures in this log were computed on n=60 and have not yet
+  been re-run on n=272: the three-way tier comparison table and the Fareez
+  half of "Precision at flagging budgets". (The n=60 bootstrap entry is
+  superseded by the table above.)
+
+## 2026-09-25 — Precision at flagging budgets: Fareez re-run on n=272
+
+Re-ran the Fareez half of "Precision at flagging budgets" on the full n=272
+`word_level_labels_fareez.csv`, using the unchanged functions in
+`scratch/precision_recall_at_budgets.py` and the same read-only
+no-tier-feature model. ACI-Bench half not re-run (its inputs are unchanged).
+Sanity check: running the same code on
+`scratch/word_level_labels_fareez_n60_backup.csv` reproduces the logged n=60
+Fareez numbers exactly.
+
+Scorable rows (deletions excluded): n=60 88,989 → n=272 352,473. Critical
+(Tier 2/3) errors: 102 → 245.
+
+| Ranking | Budget | Precision n=60 | Precision n=272 | Recall n=60 | Recall n=272 |
+|---|---|---|---|---|---|
+| raw_confidence | 5% | 0.67% | 0.40% | 29.41% | 28.98% |
+| raw_confidence | 10% | 0.66% | 0.37% | 57.84% | 52.65% |
+| raw_confidence | 20% | 0.46% | 0.26% | 80.39% | 75.92% |
+| risk_score | 5% | 1.33% | 0.73% | 57.84% | 52.65% |
+| risk_score | 10% | 0.78% | 0.44% | 67.65% | 62.86% |
+| risk_score | 20% | 0.48% | 0.28% | 84.31% | 80.00% |
+| random (chance) | any | 0.11% | 0.07% | = budget | = budget |
+
+Random baseline: 102/88,989 = 0.11% (n=60) → 245/352,473 = 0.07% (n=272).
+
+- Absolute precision dropped roughly by half at every budget, tracking the
+  drop in critical-error density (0.115% → 0.070%). Expected: the n=60 set
+  was selected to prioritize encounters containing Tier 2/3 terms, so it
+  over-represented critical errors relative to the full set.
+- Relative results hold. risk_score beats raw_confidence on precision at
+  every budget (5%: 0.73% vs. 0.40%, ~1.8x; was ~2x at n=60). Against
+  chance at 5%, risk_score is ~10.5x (was ~12x) and raw_confidence ~5.8x
+  (was ~6x).
+- Recall fell modestly (about 4-5 pp at most budgets; raw_confidence at 5%
+  essentially unchanged), and risk_score still leads raw_confidence at
+  every budget.
+- Fareez precision is still below ACI-Bench precision at every budget, and
+  the gap is now wider, consistent with Fareez's lower critical-error
+  density.
+- This closes the precision-at-budgets part of the n=60/n=272 mismatch
+  flagged in the previous entry. The three-way tier comparison table
+  (2026-09-23) still shows n=60 Fareez figures and has not been updated.
+- The recall drop at n=272 (4-5pp at most budgets, see table -- raw_confidence at 5% is a near-exception at 0.43pp) is likely due to the same cause as the precision drop and the Tier 2 rate shift already noted -- the n=60 subset's selection for Tier 2/3 term density may have made it non-representative of the full dataset's difficulty, not just its critical-term density. This has not been directly tested.
+
+## 2026-09-25 — Critical-error recall: 60 selected vs. 212 remaining encounters
+
+Split the n=272 `word_level_labels_fareez.csv` into the 60 encounters in
+`scratch/fareez_60_gold_text.json` and the remaining 212. Computed
+critical-error (Tier 2/3) recall under the risk_score ranking at 5/10/20%
+budgets, each group ranked and budgeted within its own rows. Same read-only
+no-tier-feature model and functions as `scratch/precision_recall_at_budgets.py`.
+
+| Budget | 60 selected | 212 remaining | Gap | All 272 |
+|---|---|---|---|---|
+| 5% | 57.84% (59/102) | 51.05% (73/143) | −6.79 pp | 52.65% |
+| 10% | 67.65% (69/102) | 59.44% (85/143) | −8.21 pp | 62.86% |
+| 20% | 84.31% (86/102) | 76.92% (110/143) | −7.39 pp | 80.00% |
+
+Scorable rows: 60 selected 88,989; 212 remaining 263,484.
+
+- Sanity check: the 60-encounter group, taken from the n=272 file,
+  reproduces the logged n=60 recall numbers exactly. The n=272 recall drop
+  therefore comes entirely from adding the 212, not from any change in how
+  the original 60 were processed.
+- Density vs. difficulty: critical-error density is about half as high in
+  the 212 (0.054% of rows) as in the 60 (0.115%). Density alone does not
+  set recall; the lower recall means the 212's critical errors are also
+  harder to rank to the top, consistent with the n=60 selection being
+  non-representative of difficulty, not just critical-term density.
+- Not tested for significance. Counts are small (102 and 143 critical
+  errors), so part of the ~7-8 pp gap may be noise. An encounter-level
+  bootstrap on the gap would settle it.
+
+## 2026-10-05 — KNOWN ISSUE, NOT YET FIXED: production-ASR row skipped the ok/okay normalize() fix
+
+`src/eval/validate_real_asr.py:32` defines its own `normalize()`
+(`re.sub(r"[^a-z0-9']", "", str(word).lower())`) instead of importing the
+patched one from `align_and_label.py`, so it does not map `okay` → `ok`.
+The production-ASR row of the 2026-09-23 three-way tier comparison
+(Tier 1/2/3: 2.23% / 1.75% / 1.33%) therefore has NOT gone through the same
+correction as the ACI-Bench+TTS and Fareez rows. Its values, and its 0.6x
+(inverted) Tier3/Tier1 ratio, may shift once corrected — the ACI-Bench+TTS
+Tier 2 cell moved 5.30pp from the same fix via alignment boundary shifts.
+`fig5_synthetic_vs_real.png` hardcodes these production-ASR values
+(2.2 / 1.8 / 1.3) and inherits the issue.
+
+Next priority after the current push: apply the patched normalize() in
+`validate_real_asr.py`, re-run it, and update the three-way table and fig5.
+
+## 2026-10-05 — With-tier model retrained on normalize()-corrected labels (side effect)
+
+`models/uncertainty_xgb.joblib` (the with-tier-feature classifier) was
+retrained on the normalize()-corrected `word_level_labels.csv` as a side
+effect of regenerating `data/processed/risk_scores_test.csv` with
+`src/model/risk_score.py`, which trains and saves the model before scoring.
+Both files dated from 2026-09-19, before the 2026-09-23 ok/okay fix; the
+2026-09-23 "rerun all downstream results" pass did not re-run
+`risk_score.py`. Same features, split (GroupShuffleSplit, seed 42) and
+hyperparameters; only the labels changed. Test set still 48,921 rows,
+241 critical (Tier 2/3) errors.
+
+ACI-Bench test-set critical-error recall, old → new:
+
+| Ranking | 5% | 10% | 20% |
+|---|---|---|---|
+| risk_score | 39.8% → 39.0% | 57.7% → 57.3% | 75.9% → 74.3% |
+| uncertainty only | 36.1% → 36.1% | 54.4% → 53.9% | 73.9% → 72.2% |
+
+- risk_score still beats uncertainty-only at every budget (+2.9, +3.4,
+  +2.1 pp new).
+- Classifier ROC-AUC unchanged at 0.856; recall at the 0.5 probability cutoff
+  0.806 → 0.810.
+- The 90th percentile of held-out risk scores moved from 0.8393 to 0.8355.
+  `FLAG_RISK_THRESHOLD = 0.839` in `risk_pipeline.py` was left unchanged; it
+  now flags 9.78% of held-out words instead of ~10%.
+- The with-tier rows in the 2026-09-23 ablation entry ("(b) learned
+  uncertainty — with tier feature (original)" and "(d) risk score — with
+  tier feature (original)") were computed on the old model and have not
+  been re-run.
+- All five figures were redrawn (fig1/fig5 also pick up the corrected
+  ACI-Bench+TTS Tier 1/2/3 values 12.54 / 62.05 / 90.17).

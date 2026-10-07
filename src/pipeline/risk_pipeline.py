@@ -14,10 +14,11 @@ TIER_WEIGHTS = {1: 1.0, 2: 3.25, 3: 4.25}
 CORRECTION_THRESHOLD = 0.5
 
 # Fixed, data-calibrated flagging threshold (the top-10% operating point
-# measured on the held-out test set: precision 0.544, critical-error recall
-# 0.577). Deliberately NOT recomputed per-encounter — a per-input percentile
+# measured on the held-out test set: precision 0.542, critical-error recall
+# 0.573). Deliberately NOT recomputed per-encounter — a per-input percentile
 # would always flag exactly the same fraction of words regardless of how
 # risky that encounter actually is.
+# Retrained model's 90th percentile is 0.8355 (0.839 flags 9.78% of words); threshold deliberately left at 0.839.
 FLAG_RISK_THRESHOLD = 0.839
 
 
