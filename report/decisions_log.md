@@ -512,3 +512,20 @@ ACI-Bench test-set critical-error recall, old → new:
   been re-run.
 - All five figures were redrawn (fig1/fig5 also pick up the corrected
   ACI-Bench+TTS Tier 1/2/3 values 12.54 / 62.05 / 90.17).
+
+## 2026-10-24 — Two Fareez recall figures at a 10% budget; paper uses Yashvi's
+
+Two sets of Fareez (n=272) critical-error recall figures exist at a 10%
+review budget:
+
+| Source | risk_score / RiskAware | raw_confidence |
+|---|---|---|
+| Ours, `scratch/precision_recall_at_budgets.py` | 62.86% | 52.65% |
+| Yashvi's | 58.27% | 48.50% |
+
+- Both count the same number of caught critical errors (hits). Only the
+  denominator differs: about 245 critical errors in ours, about 266 in
+  Yashvi's.
+- The paper reports Yashvi's figures (58.27% / 48.50%), and the README
+  matches the paper. The figures in our earlier entries are left as
+  recorded.
