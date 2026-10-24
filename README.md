@@ -16,19 +16,31 @@ Full methodology, decisions, and dated findings are in `report/decisions_log.md`
 
 ## Headline results
 
-- Tier 3 (drug/dosage) terms are mistranscribed **90.2%** of the time by a
-  general-purpose Whisper-base pipeline, vs. **12.5%** for everyday words
-  (see `report/figures/fig1_wer_by_tier.png`)
+- On 272 real recorded encounters (Fareez), Whisper-base mistranscribes
+  everyday / clinical / drug terms at **10.24% / 24.33% / 55.04%**;
+  Whisper-small at **9.21% / 13.69% / 35.69%**
 - Reference-free classifiers (confidence + criticality + word length) predict
-  transcription errors with ROC-AUC ~0.86 with no access to the gold transcript
-- Risk-weighted flagging beats confidence-alone flagging on catching critical
-  errors specifically (bootstrap 95% CI [0.9, 6.0]pp at a 10% review budget)
+  transcription errors with ROC-AUC **0.8535** (ACI-Bench, 5-fold CV) with no
+  access to the gold transcript
+- At a 10% review budget on ACI-Bench (5-fold CV), RiskAware catches
+  **59.31%** of critical errors vs. **47.27%** for raw confidence (+12.04 pp)
+- At a 10% review budget on Fareez, critical-error recall is **48.50%** for
+  raw confidence, **58.27%** for RiskAware, and **78.57%** for
+  disagreement + confidence
 - The constrained correction module recovers ~93% of genuine phonetic
   mistranscriptions of critical terms, and correctly declines to guess on
   unrecoverable ones rather than presenting a bad guess as reliable
 - This pattern is specific to general-purpose ASR (e.g. Whisper) without medical
   fine-tuning — validated against real ASR-vs-human-transcript pairs from
   ACI-Bench, where a production-grade system shows no such tier gap
+
+## Reproducing the Fareez results
+
+- `experiments/fareez_followup/fareez_followup.ipynb` (added in PR #4) runs
+  the Fareez Whisper-small and cross-model experiments; run it in Google Colab
+  on a T4 GPU.
+- `scratch/run_align_fareez272.py` aligns and labels all 272 Fareez encounters
+  into `data/processed/word_level_labels_fareez.csv`.
 
 ## Setup
 
