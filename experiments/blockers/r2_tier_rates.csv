@@ -1,0 +1,16 @@
+condition,tier,gold_words,errors,error_rate_pct,encounters,gold_words_total
+stored file (as committed),1,129883,2892,2.2266,105,130639
+stored file (as committed),2,228,4,1.7544,105,130639
+stored file (as committed),3,528,7,1.3258,105,130639
+"old normalize, 176-term glossary",1,129883,2892,2.2266,105,130639
+"old normalize, 176-term glossary",2,228,4,1.7544,105,130639
+"old normalize, 176-term glossary",3,528,7,1.3258,105,130639
+"old normalize, 190-term glossary",1,129854,2891,2.2263,105,130639
+"old normalize, 190-term glossary",2,257,5,1.9455,105,130639
+"old normalize, 190-term glossary",3,528,7,1.3258,105,130639
+"new normalize, 176-term glossary",1,129883,2892,2.2266,105,130639
+"new normalize, 176-term glossary",2,228,4,1.7544,105,130639
+"new normalize, 176-term glossary",3,528,7,1.3258,105,130639
+"new normalize, 190-term glossary",1,129854,2891,2.2263,105,130639
+"new normalize, 190-term glossary",2,257,5,1.9455,105,130639
+"new normalize, 190-term glossary",3,528,7,1.3258,105,130639
