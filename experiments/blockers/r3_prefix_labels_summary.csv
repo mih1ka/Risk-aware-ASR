@@ -1,0 +1,7 @@
+labels,read,sort,ranking,budget_pct,recall_scorable_mean,recall_scorable_sd,recall_all_mean,recall_all_sd,roc_auc_mean
+pre-normalize-fix (git 9d19693),default,default,raw_confidence,5,20.8052,2.1492,20.4404,2.1968,0.8534
+pre-normalize-fix (git 9d19693),default,default,raw_confidence,10,47.2713,2.4062,46.4376,2.6555,0.8534
+pre-normalize-fix (git 9d19693),default,default,raw_confidence,20,75.9926,3.2042,74.6415,3.4147,0.8534
+pre-normalize-fix (git 9d19693),default,default,riskaware,5,42.9214,1.1132,42.1553,1.1934,0.8534
+pre-normalize-fix (git 9d19693),default,default,riskaware,10,58.2923,2.7025,57.2459,2.5585,0.8534
+pre-normalize-fix (git 9d19693),default,default,riskaware,20,77.2522,2.8962,75.8807,3.2096,0.8534

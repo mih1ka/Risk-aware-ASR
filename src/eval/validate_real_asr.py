@@ -5,6 +5,8 @@ import pandas as pd
 import jiwer
 import jellyfish
 
+from align_and_label import normalize, tokenize
+
 DATA_DIR = Path("data/raw_aci_bench/data/src_experiment_data")
 GLOSSARY_PATH = Path("data/glossary/tiered_glossary.csv")
 
@@ -27,14 +29,6 @@ def load_glossary():
 def extract_text(dialogue):
     parts = re.split(r"\[(?:doctor|patient)\]", str(dialogue))
     return " ".join(p.strip() for p in parts if p.strip())
-
-
-def normalize(word):
-    return re.sub(r"[^a-z0-9']", "", str(word).lower())
-
-
-def tokenize(text):
-    return [w for w in text.split() if re.search(r"[a-zA-Z0-9]", w)]
 
 
 def candidate_similarity(word, term):

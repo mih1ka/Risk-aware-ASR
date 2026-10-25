@@ -1,0 +1,5 @@
+normalize,glossary,tier2_rate,tier2_gold_words,tier2_errors
+"old (pre-fix, git e30d20c)",176,67.36%,435,293
+"old (pre-fix, git e30d20c)",190,62.05%,477,296
+new (current),176,67.36%,435,293
+new (current),190,62.05%,477,296

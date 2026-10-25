@@ -1,0 +1,12 @@
+check,expected,observed,match
+tier1_rate_pct,10.24,10.24,True
+tier1_gold_words,356873,356873,True
+tier2_rate_pct,24.33,24.33,True
+tier2_gold_words,263,263,True
+tier3_rate_pct,55.04,55.04,True
+tier3_gold_words,367,367,True
+encounters,272,272,True
+scorable_critical_errors,245,245,True
+raw_caught_at_10pct,129,129,True
+riskaware_caught_at_10pct,154 or 155,155,True
+realignment_matches_stored,True,True,True

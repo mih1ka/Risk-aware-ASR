@@ -1,0 +1,9 @@
+labels,glossary,csv_read,riskaware_10_scorable,raw_10_scorable,roc_auc,matches_paper
+"old (pre-fix, git e30d20c)",176,pandas default,58.47,47.27,0.8534,False
+"old (pre-fix, git e30d20c)",176,keep None,58.76,47.78,0.8534,False
+"old (pre-fix, git e30d20c)",190,pandas default,58.4,47.41,0.8534,False
+"old (pre-fix, git e30d20c)",190,keep None,58.59,47.91,0.8534,False
+new (current),176,pandas default,59.07,46.79,0.8525,False
+new (current),176,keep None,59.01,46.93,0.8525,False
+new (current),190,pandas default,59.09,46.93,0.8525,False
+new (current),190,keep None,59.03,47.07,0.8525,False

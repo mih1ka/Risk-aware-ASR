@@ -16327,13 +16327,13 @@ test2_virtscribe_asr_VS005,test2_virtscribe_asr,but,but,correct,0,1.0
 test2_virtscribe_asr_VS005,test2_virtscribe_asr,it's,it's,correct,0,1.0
 test2_virtscribe_asr_VS005,test2_virtscribe_asr,not,not,correct,0,1.0
 test2_virtscribe_asr_VS005,test2_virtscribe_asr,a,a,correct,0,1.0
-test2_virtscribe_asr_VS005,test2_virtscribe_asr,steroid,steroid,correct,0,1.0
+test2_virtscribe_asr_VS005,test2_virtscribe_asr,steroid,steroid,correct,0,2.0
 test2_virtscribe_asr_VS005,test2_virtscribe_asr,right,right,correct,0,1.0
 test2_virtscribe_asr_VS005,test2_virtscribe_asr,correct,correct,correct,0,1.0
 test2_virtscribe_asr_VS005,test2_virtscribe_asr,it's,it's,correct,0,1.0
 test2_virtscribe_asr_VS005,test2_virtscribe_asr,not,not,correct,0,1.0
 test2_virtscribe_asr_VS005,test2_virtscribe_asr,a,a,correct,0,1.0
-test2_virtscribe_asr_VS005,test2_virtscribe_asr,steroid,steroid,correct,0,1.0
+test2_virtscribe_asr_VS005,test2_virtscribe_asr,steroid,steroid,correct,0,2.0
 test2_virtscribe_asr_VS005,test2_virtscribe_asr,okay,okay,correct,0,1.0
 test2_virtscribe_asr_VS005,test2_virtscribe_asr,good,good,correct,0,1.0
 test2_virtscribe_asr_VS005,test2_virtscribe_asr,it's,it's,correct,0,1.0
@@ -16346,7 +16346,7 @@ test2_virtscribe_asr_VS005,test2_virtscribe_asr,,kind,insertion,1,
 test2_virtscribe_asr_VS005,test2_virtscribe_asr,kinda,of,substitution,1,1.0
 test2_virtscribe_asr_VS005,test2_virtscribe_asr,like,like,correct,0,1.0
 test2_virtscribe_asr_VS005,test2_virtscribe_asr,a,a,correct,0,1.0
-test2_virtscribe_asr_VS005,test2_virtscribe_asr,steroid,steroid,correct,0,1.0
+test2_virtscribe_asr_VS005,test2_virtscribe_asr,steroid,steroid,correct,0,2.0
 test2_virtscribe_asr_VS005,test2_virtscribe_asr,in,and,substitution,1,1.0
 test2_virtscribe_asr_VS005,test2_virtscribe_asr,that,then,substitution,1,1.0
 test2_virtscribe_asr_VS005,test2_virtscribe_asr,it,it,correct,0,1.0
@@ -16357,12 +16357,12 @@ test2_virtscribe_asr_VS005,test2_virtscribe_asr,but,but,correct,0,1.0
 test2_virtscribe_asr_VS005,test2_virtscribe_asr,it's,it's,correct,0,1.0
 test2_virtscribe_asr_VS005,test2_virtscribe_asr,not,not,correct,0,1.0
 test2_virtscribe_asr_VS005,test2_virtscribe_asr,a,a,correct,0,1.0
-test2_virtscribe_asr_VS005,test2_virtscribe_asr,steroid,steroid,correct,0,1.0
+test2_virtscribe_asr_VS005,test2_virtscribe_asr,steroid,steroid,correct,0,2.0
 test2_virtscribe_asr_VS005,test2_virtscribe_asr,so,so,correct,0,1.0
 test2_virtscribe_asr_VS005,test2_virtscribe_asr,do,do,correct,0,1.0
 test2_virtscribe_asr_VS005,test2_virtscribe_asr,n't,n't,correct,0,1.0
 test2_virtscribe_asr_VS005,test2_virtscribe_asr,use,use,correct,0,1.0
-test2_virtscribe_asr_VS005,test2_virtscribe_asr,steroids,steroids,correct,0,1.0
+test2_virtscribe_asr_VS005,test2_virtscribe_asr,steroids,steroids,correct,0,2.0
 test2_virtscribe_asr_VS005,test2_virtscribe_asr,on,on,correct,0,1.0
 test2_virtscribe_asr_VS005,test2_virtscribe_asr,your,your,correct,0,1.0
 test2_virtscribe_asr_VS005,test2_virtscribe_asr,face,face,correct,0,1.0
@@ -16378,7 +16378,7 @@ test2_virtscribe_asr_VS005,test2_virtscribe_asr,rash,rash,correct,0,1.0
 test2_virtscribe_asr_VS005,test2_virtscribe_asr,worse,worse,correct,0,1.0
 test2_virtscribe_asr_VS005,test2_virtscribe_asr,but,but,correct,0,1.0
 test2_virtscribe_asr_VS005,test2_virtscribe_asr,also,also,correct,0,1.0
-test2_virtscribe_asr_VS005,test2_virtscribe_asr,steroids,steroids,correct,0,1.0
+test2_virtscribe_asr_VS005,test2_virtscribe_asr,steroids,steroids,correct,0,2.0
 test2_virtscribe_asr_VS005,test2_virtscribe_asr,carry,carry,correct,0,1.0
 test2_virtscribe_asr_VS005,test2_virtscribe_asr,the,the,correct,0,1.0
 test2_virtscribe_asr_VS005,test2_virtscribe_asr,risk,risk,correct,0,1.0
@@ -18426,14 +18426,14 @@ test2_virtscribe_asr_VS009,test2_virtscribe_asr,or,or,correct,0,1.0
 test2_virtscribe_asr_VS009,test2_virtscribe_asr,exposure,exposure,correct,0,1.0
 test2_virtscribe_asr_VS009,test2_virtscribe_asr,to,to,correct,0,1.0
 test2_virtscribe_asr_VS009,test2_virtscribe_asr,the,the,correct,0,1.0
-test2_virtscribe_asr_VS009,test2_virtscribe_asr,coronavirus,coronavirus,correct,0,1.0
+test2_virtscribe_asr_VS009,test2_virtscribe_asr,coronavirus,coronavirus,correct,0,2.0
 test2_virtscribe_asr_VS009,test2_virtscribe_asr,nope,nope,correct,0,1.0
 test2_virtscribe_asr_VS009,test2_virtscribe_asr,have,have,correct,0,1.0
 test2_virtscribe_asr_VS009,test2_virtscribe_asr,you,you,correct,0,1.0
 test2_virtscribe_asr_VS009,test2_virtscribe_asr,received,received,correct,0,1.0
 test2_virtscribe_asr_VS009,test2_virtscribe_asr,your,your,correct,0,1.0
 test2_virtscribe_asr_VS009,test2_virtscribe_asr,,corona,insertion,1,
-test2_virtscribe_asr_VS009,test2_virtscribe_asr,coronavirus,virus,substitution,1,1.0
+test2_virtscribe_asr_VS009,test2_virtscribe_asr,coronavirus,virus,substitution,1,2.0
 test2_virtscribe_asr_VS009,test2_virtscribe_asr,vaccine,vaccine,correct,0,1.0
 test2_virtscribe_asr_VS009,test2_virtscribe_asr,yes,yes,correct,0,1.0
 test2_virtscribe_asr_VS009,test2_virtscribe_asr,on,on,correct,0,1.0
@@ -24068,7 +24068,7 @@ test2_virtscribe_asr_VS036,test2_virtscribe_asr,here,here,correct,0,1.0
 test2_virtscribe_asr_VS036,test2_virtscribe_asr,he,he,correct,0,1.0
 test2_virtscribe_asr_VS036,test2_virtscribe_asr,received,received,correct,0,1.0
 test2_virtscribe_asr_VS036,test2_virtscribe_asr,a,a,correct,0,1.0
-test2_virtscribe_asr_VS036,test2_virtscribe_asr,steroid,steroid,correct,0,1.0
+test2_virtscribe_asr_VS036,test2_virtscribe_asr,steroid,steroid,correct,0,2.0
 test2_virtscribe_asr_VS036,test2_virtscribe_asr,injection,injection,correct,0,1.0
 test2_virtscribe_asr_VS036,test2_virtscribe_asr,in,in,correct,0,1.0
 test2_virtscribe_asr_VS036,test2_virtscribe_asr,his,his,correct,0,1.0
@@ -24553,7 +24553,7 @@ test2_virtscribe_asr_VS036,test2_virtscribe_asr,can,can,correct,0,1.0
 test2_virtscribe_asr_VS036,test2_virtscribe_asr,give,give,correct,0,1.0
 test2_virtscribe_asr_VS036,test2_virtscribe_asr,you,you,correct,0,1.0
 test2_virtscribe_asr_VS036,test2_virtscribe_asr,another,another,correct,0,1.0
-test2_virtscribe_asr_VS036,test2_virtscribe_asr,steroid,steroid,correct,0,1.0
+test2_virtscribe_asr_VS036,test2_virtscribe_asr,steroid,steroid,correct,0,2.0
 test2_virtscribe_asr_VS036,test2_virtscribe_asr,injection,injection,correct,0,1.0
 test2_virtscribe_asr_VS036,test2_virtscribe_asr,for,for,correct,0,1.0
 test2_virtscribe_asr_VS036,test2_virtscribe_asr,that,that,correct,0,1.0
@@ -24685,7 +24685,7 @@ test2_virtscribe_asr_VS036,test2_virtscribe_asr,we'll,we'll,correct,0,1.0
 test2_virtscribe_asr_VS036,test2_virtscribe_asr,give,give,correct,0,1.0
 test2_virtscribe_asr_VS036,test2_virtscribe_asr,you,you,correct,0,1.0
 test2_virtscribe_asr_VS036,test2_virtscribe_asr,the,the,correct,0,1.0
-test2_virtscribe_asr_VS036,test2_virtscribe_asr,steroid,steroid,correct,0,1.0
+test2_virtscribe_asr_VS036,test2_virtscribe_asr,steroid,steroid,correct,0,2.0
 test2_virtscribe_asr_VS036,test2_virtscribe_asr,shot,shot,correct,0,1.0
 test2_virtscribe_asr_VS036,test2_virtscribe_asr,i'll,i'll,correct,0,1.0
 test2_virtscribe_asr_VS036,test2_virtscribe_asr,try,try,correct,0,1.0
@@ -24960,7 +24960,7 @@ test2_virtscribe_asr_VS036,test2_virtscribe_asr,knee,knee,correct,0,1.0
 test2_virtscribe_asr_VS036,test2_virtscribe_asr,fluid,fluid,correct,0,1.0
 test2_virtscribe_asr_VS036,test2_virtscribe_asr,aspiration,aspiration,correct,0,1.0
 test2_virtscribe_asr_VS036,test2_virtscribe_asr,and,and,correct,0,1.0
-test2_virtscribe_asr_VS036,test2_virtscribe_asr,steroid,steroid,correct,0,1.0
+test2_virtscribe_asr_VS036,test2_virtscribe_asr,steroid,steroid,correct,0,2.0
 test2_virtscribe_asr_VS036,test2_virtscribe_asr,injection,injection,correct,0,1.0
 test2_virtscribe_asr_VS036,test2_virtscribe_asr,procedure,procedure,correct,0,1.0
 test2_virtscribe_asr_VS036,test2_virtscribe_asr,the,the,correct,0,1.0
@@ -24973,7 +24973,7 @@ test2_virtscribe_asr_VS036,test2_virtscribe_asr,explained,explained,correct,0,1.
 test2_virtscribe_asr_VS036,test2_virtscribe_asr,the,the,correct,0,1.0
 test2_virtscribe_asr_VS036,test2_virtscribe_asr,risks,risks,correct,0,1.0
 test2_virtscribe_asr_VS036,test2_virtscribe_asr,of,of,correct,0,1.0
-test2_virtscribe_asr_VS036,test2_virtscribe_asr,steroid,steroid,correct,0,1.0
+test2_virtscribe_asr_VS036,test2_virtscribe_asr,steroid,steroid,correct,0,2.0
 test2_virtscribe_asr_VS036,test2_virtscribe_asr,injection,injection,correct,0,1.0
 test2_virtscribe_asr_VS036,test2_virtscribe_asr,were,were,correct,0,1.0
 test2_virtscribe_asr_VS036,test2_virtscribe_asr,explained,explained,correct,0,1.0
@@ -34369,7 +34369,7 @@ test3_virtscribe_asr_VS030,test3_virtscribe_asr,her,her,correct,0,1.0
 test3_virtscribe_asr_VS030,test3_virtscribe_asr,her,her,correct,0,1.0
 test3_virtscribe_asr_VS030,test3_virtscribe_asr,gait,gait,correct,0,1.0
 test3_virtscribe_asr_VS030,test3_virtscribe_asr,was,was,correct,0,1.0
-test3_virtscribe_asr_VS030,test3_virtscribe_asr,antalgic,antalgic,correct,0,1.0
+test3_virtscribe_asr_VS030,test3_virtscribe_asr,antalgic,antalgic,correct,0,2.0
 test3_virtscribe_asr_VS030,test3_virtscribe_asr,with,with,correct,0,1.0
 test3_virtscribe_asr_VS030,test3_virtscribe_asr,a,a,correct,0,1.0
 test3_virtscribe_asr_VS030,test3_virtscribe_asr,slight,slight,correct,0,1.0
@@ -37881,7 +37881,7 @@ valid_aci_asr_ACI103,valid_aci_asr,we,we,correct,0,1.0
 valid_aci_asr_ACI103,valid_aci_asr,can,can,correct,0,1.0
 valid_aci_asr_ACI103,valid_aci_asr,consider,consider,correct,0,1.0
 valid_aci_asr_ACI103,valid_aci_asr,a,a,correct,0,1.0
-valid_aci_asr_ACI103,valid_aci_asr,steroid,steroid,correct,0,1.0
+valid_aci_asr_ACI103,valid_aci_asr,steroid,steroid,correct,0,2.0
 valid_aci_asr_ACI103,valid_aci_asr,injection,injection,correct,0,1.0
 valid_aci_asr_ACI103,valid_aci_asr,for,for,correct,0,1.0
 valid_aci_asr_ACI103,valid_aci_asr,your,your,correct,0,1.0
@@ -53938,7 +53938,7 @@ test1_aci_asr_ACI024,test1_aci_asr,na,na,correct,0,1.0
 test1_aci_asr_ACI024,test1_aci_asr,recommend,recommend,correct,0,1.0
 test1_aci_asr_ACI024,test1_aci_asr,an,an,correct,0,1.0
 test1_aci_asr_ACI024,test1_aci_asr,epidural,epidural,correct,0,1.0
-test1_aci_asr_ACI024,test1_aci_asr,steroid,steroid,correct,0,1.0
+test1_aci_asr_ACI024,test1_aci_asr,steroid,steroid,correct,0,2.0
 test1_aci_asr_ACI024,test1_aci_asr,injection,injection,correct,0,1.0
 test1_aci_asr_ACI024,test1_aci_asr,and,and,correct,0,1.0
 test1_aci_asr_ACI024,test1_aci_asr,we're,we're,correct,0,1.0
@@ -57919,7 +57919,7 @@ test1_aci_asr_ACI088,test1_aci_asr,ahead,ahead,correct,0,1.0
 test1_aci_asr_ACI088,test1_aci_asr,and,and,correct,0,1.0
 test1_aci_asr_ACI088,test1_aci_asr,consider,consider,correct,0,1.0
 test1_aci_asr_ACI088,test1_aci_asr,a,a,correct,0,1.0
-test1_aci_asr_ACI088,test1_aci_asr,steroid,steroid,correct,0,1.0
+test1_aci_asr_ACI088,test1_aci_asr,steroid,steroid,correct,0,2.0
 test1_aci_asr_ACI088,test1_aci_asr,injection,injection,correct,0,1.0
 test1_aci_asr_ACI088,test1_aci_asr,of,of,correct,0,1.0
 test1_aci_asr_ACI088,test1_aci_asr,your,your,correct,0,1.0
@@ -61778,7 +61778,7 @@ test1_aci_asr_ACI043,test1_aci_asr,antibiotics,antibiotics,correct,0,1.0
 test1_aci_asr_ACI043,test1_aci_asr,sometimes,sometimes,correct,0,1.0
 test1_aci_asr_ACI043,test1_aci_asr,i'll,i'll,correct,0,1.0
 test1_aci_asr_ACI043,test1_aci_asr,get,get,correct,0,1.0
-test1_aci_asr_ACI043,test1_aci_asr,steroids,steroids,correct,0,1.0
+test1_aci_asr_ACI043,test1_aci_asr,steroids,steroids,correct,0,2.0
 test1_aci_asr_ACI043,test1_aci_asr,one,one,correct,0,1.0
 test1_aci_asr_ACI043,test1_aci_asr,time,time,correct,0,1.0
 test1_aci_asr_ACI043,test1_aci_asr,it,it,correct,0,1.0
@@ -62842,7 +62842,7 @@ test1_aci_asr_ACI043,test1_aci_asr,with,with,correct,0,1.0
 test1_aci_asr_ACI043,test1_aci_asr,your,your,correct,0,1.0
 test1_aci_asr_ACI043,test1_aci_asr,inhaled,inhaled,correct,0,1.0
 test1_aci_asr_ACI043,test1_aci_asr,inhaled,inhaled,correct,0,1.0
-test1_aci_asr_ACI043,test1_aci_asr,steroid,steroid,correct,0,1.0
+test1_aci_asr_ACI043,test1_aci_asr,steroid,steroid,correct,0,2.0
 test1_aci_asr_ACI043,test1_aci_asr,inhaler,inhaler,correct,0,1.0
 test1_aci_asr_ACI043,test1_aci_asr,so,so,correct,0,1.0
 test1_aci_asr_ACI043,test1_aci_asr,i'm,i'm,correct,0,1.0
@@ -62891,7 +62891,7 @@ test1_aci_asr_ACI043,test1_aci_asr,you,you,correct,0,1.0
 test1_aci_asr_ACI043,test1_aci_asr,take,take,correct,0,1.0
 test1_aci_asr_ACI043,test1_aci_asr,your,your,correct,0,1.0
 test1_aci_asr_ACI043,test1_aci_asr,inhaled,inhaled,correct,0,1.0
-test1_aci_asr_ACI043,test1_aci_asr,steroid,steroid,correct,0,1.0
+test1_aci_asr_ACI043,test1_aci_asr,steroid,steroid,correct,0,2.0
 test1_aci_asr_ACI043,test1_aci_asr,inhaler,inhaler,correct,0,1.0
 test1_aci_asr_ACI043,test1_aci_asr,the,the,correct,0,1.0
 test1_aci_asr_ACI043,test1_aci_asr,less,less,correct,0,1.0
@@ -62996,7 +62996,7 @@ test1_aci_asr_ACI043,test1_aci_asr,to,to,correct,0,1.0
 test1_aci_asr_ACI043,test1_aci_asr,use,use,correct,0,1.0
 test1_aci_asr_ACI043,test1_aci_asr,your,your,correct,0,1.0
 test1_aci_asr_ACI043,test1_aci_asr,inhaled,inhaled,correct,0,1.0
-test1_aci_asr_ACI043,test1_aci_asr,steroid,steroid,correct,0,1.0
+test1_aci_asr_ACI043,test1_aci_asr,steroid,steroid,correct,0,2.0
 test1_aci_asr_ACI043,test1_aci_asr,i'm,i'm,correct,0,1.0
 test1_aci_asr_ACI043,test1_aci_asr,also,also,correct,0,1.0
 test1_aci_asr_ACI043,test1_aci_asr,going,going,correct,0,1.0
@@ -63135,7 +63135,7 @@ test1_aci_asr_ACI043,test1_aci_asr,consistent,consistent,correct,0,1.0
 test1_aci_asr_ACI043,test1_aci_asr,with,with,correct,0,1.0
 test1_aci_asr_ACI043,test1_aci_asr,your,your,correct,0,1.0
 test1_aci_asr_ACI043,test1_aci_asr,inhaled,inhaled,correct,0,1.0
-test1_aci_asr_ACI043,test1_aci_asr,steroid,steroid,correct,0,1.0
+test1_aci_asr_ACI043,test1_aci_asr,steroid,steroid,correct,0,2.0
 test1_aci_asr_ACI043,test1_aci_asr,inhaler,inhaler,correct,0,1.0
 test1_aci_asr_ACI043,test1_aci_asr,this,this,correct,0,1.0
 test1_aci_asr_ACI043,test1_aci_asr,is,is,correct,0,1.0
@@ -76898,7 +76898,7 @@ test2_aci_asr_ACI099,test2_aci_asr,maybe,maybe,correct,0,1.0
 test2_aci_asr_ACI099,test2_aci_asr,like,like,correct,0,1.0
 test2_aci_asr_ACI099,test2_aci_asr,an,an,correct,0,1.0
 test2_aci_asr_ACI099,test2_aci_asr,epidural,epidural,correct,0,1.0
-test2_aci_asr_ACI099,test2_aci_asr,steroid,steroid,correct,0,1.0
+test2_aci_asr_ACI099,test2_aci_asr,steroid,steroid,correct,0,2.0
 test2_aci_asr_ACI099,test2_aci_asr,injection,injection,correct,0,1.0
 test2_aci_asr_ACI099,test2_aci_asr,to,to,correct,0,1.0
 test2_aci_asr_ACI099,test2_aci_asr,help,help,correct,0,1.0
@@ -112814,7 +112814,7 @@ test3_aci_asr_ACI068,test3_aci_asr,consider,consider,correct,0,1.0
 test3_aci_asr_ACI068,test3_aci_asr,maybe,maybe,correct,0,1.0
 test3_aci_asr_ACI068,test3_aci_asr,like,like,correct,0,1.0
 test3_aci_asr_ACI068,test3_aci_asr,a,a,correct,0,1.0
-test3_aci_asr_ACI068,test3_aci_asr,steroid,steroid,correct,0,1.0
+test3_aci_asr_ACI068,test3_aci_asr,steroid,steroid,correct,0,2.0
 test3_aci_asr_ACI068,test3_aci_asr,injection,injection,correct,0,1.0
 test3_aci_asr_ACI068,test3_aci_asr,of,of,correct,0,1.0
 test3_aci_asr_ACI068,test3_aci_asr,that,that,correct,0,1.0
@@ -123171,7 +123171,7 @@ test3_aci_asr_ACI014,test3_aci_asr,i,i,correct,0,1.0
 test3_aci_asr_ACI014,test3_aci_asr,inject,inject,correct,0,1.0
 test3_aci_asr_ACI014,test3_aci_asr,the,the,correct,0,1.0
 test3_aci_asr_ACI014,test3_aci_asr,cotocoid,cotocoid,correct,0,1.0
-test3_aci_asr_ACI014,test3_aci_asr,steroid,steroid,correct,0,1.0
+test3_aci_asr_ACI014,test3_aci_asr,steroid,steroid,correct,0,2.0
 test3_aci_asr_ACI014,test3_aci_asr,in,in,correct,0,1.0
 test3_aci_asr_ACI014,test3_aci_asr,the,the,correct,0,1.0
 test3_aci_asr_ACI014,test3_aci_asr,in,in,correct,0,1.0
@@ -123288,7 +123288,7 @@ test3_aci_asr_ACI014,test3_aci_asr,so,so,correct,0,1.0
 test3_aci_asr_ACI014,test3_aci_asr,i,i,correct,0,1.0
 test3_aci_asr_ACI014,test3_aci_asr,think,think,correct,0,1.0
 test3_aci_asr_ACI014,test3_aci_asr,this,this,correct,0,1.0
-test3_aci_asr_ACI014,test3_aci_asr,steroid,steroid,correct,0,1.0
+test3_aci_asr_ACI014,test3_aci_asr,steroid,steroid,correct,0,2.0
 test3_aci_asr_ACI014,test3_aci_asr,shot,shot,correct,0,1.0
 test3_aci_asr_ACI014,test3_aci_asr,is,is,correct,0,1.0
 test3_aci_asr_ACI014,test3_aci_asr,the,the,correct,0,1.0
@@ -124379,7 +124379,7 @@ test3_aci_asr_ACI091,test3_aci_asr,treatment,treatment,correct,0,1.0
 test3_aci_asr_ACI091,test3_aci_asr,such,such,correct,0,1.0
 test3_aci_asr_ACI091,test3_aci_asr,as,as,correct,0,1.0
 test3_aci_asr_ACI091,test3_aci_asr,a,a,correct,0,1.0
-test3_aci_asr_ACI091,test3_aci_asr,steroid,steroid,correct,0,1.0
+test3_aci_asr_ACI091,test3_aci_asr,steroid,steroid,correct,0,2.0
 test3_aci_asr_ACI091,test3_aci_asr,injection,injection,correct,0,1.0
 test3_aci_asr_ACI091,test3_aci_asr,to,to,correct,0,1.0
 test3_aci_asr_ACI091,test3_aci_asr,that,that,correct,0,1.0
@@ -127830,7 +127830,7 @@ test3_aci_asr_ACI019,test3_aci_asr,you,you,correct,0,1.0
 test3_aci_asr_ACI019,test3_aci_asr,a,a,correct,0,1.0
 test3_aci_asr_ACI019,test3_aci_asr,low,low,correct,0,1.0
 test3_aci_asr_ACI019,test3_aci_asr,dose,dose,correct,0,1.0
-test3_aci_asr_ACI019,test3_aci_asr,steroid,steroid,correct,0,1.0
+test3_aci_asr_ACI019,test3_aci_asr,steroid,steroid,correct,0,2.0
 test3_aci_asr_ACI019,test3_aci_asr,prednisone,prednisone,correct,0,3.0
 test3_aci_asr_ACI019,test3_aci_asr,forty,forty,correct,0,1.0
 test3_aci_asr_ACI019,test3_aci_asr,milligrams,milligrams,correct,0,1.0
@@ -127847,7 +127847,7 @@ test3_aci_asr_ACI019,test3_aci_asr,been,been,correct,0,1.0
 test3_aci_asr_ACI019,test3_aci_asr,on,on,correct,0,1.0
 test3_aci_asr_ACI019,test3_aci_asr,on,on,correct,0,1.0
 test3_aci_asr_ACI019,test3_aci_asr,a,a,correct,0,1.0
-test3_aci_asr_ACI019,test3_aci_asr,steroids,steroids,correct,0,1.0
+test3_aci_asr_ACI019,test3_aci_asr,steroids,steroids,correct,0,2.0
 test3_aci_asr_ACI019,test3_aci_asr,before,before,correct,0,1.0
 test3_aci_asr_ACI019,test3_aci_asr,no,no,correct,0,1.0
 test3_aci_asr_ACI019,test3_aci_asr,i've,i've,correct,0,1.0

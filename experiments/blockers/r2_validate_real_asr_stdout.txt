@@ -1,0 +1,25 @@
+valid_virtscribe_asr: matched 4 encounters
+test1_virtscribe_asr: matched 8 encounters
+test2_virtscribe_asr: matched 8 encounters
+test3_virtscribe_asr: matched 8 encounters
+valid_aci_asr: matched 11 encounters
+test1_aci_asr: matched 22 encounters
+test2_aci_asr: matched 22 encounters
+test3_aci_asr: matched 22 encounters
+
+Total matched encounters across all real ASR/human pairs: 105
+
+Saved 131144 word-level rows to data/processed/real_asr_word_labels.csv
+
+Error rate by glossary tier on REAL ASR data (all splits/modes combined):
+          mean   count
+tier                  
+1.0   0.022263  129854
+2.0   0.019455     257
+3.0   0.013258     528
+
+Evaluating correction on 11 real critical substitution errors
+
+Overall — Top-1: 0.455  Top-3: 0.727
+Near-miss (n=4): Top-1 1.000
+Dropout (n=7): Top-1 0.143
