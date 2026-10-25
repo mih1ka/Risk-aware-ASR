@@ -529,3 +529,135 @@ review budget:
 - The paper reports Yashvi's figures (58.27% / 48.50%), and the README
   matches the paper. The figures in our earlier entries are left as
   recorded.
+
+## 2026-10-25 — R1: Fareez results with the 176-term glossary (without Fareez-derived terms)
+
+Baseline first reproduced exactly (`experiments/blockers/r0_reproduce_baseline.py`):
+190-term glossary, T1/T2/T3 10.24% / 24.33% / 55.04% on 356,873 / 263 / 367
+gold words; at 10%, raw confidence 129 and RiskAware 155 of 245 scorable
+critical errors (266 including deletions). Two reproduction details:
+`pd.read_csv` defaults parse the spoken word "None" as NaN, dropping 7 Tier 1
+gold words (356,866); and RiskAware's hit count is 155 with ties broken by
+word order (stable sort) vs. 154 with numpy's default sort. So the
+2026-10-24 entry's "same hits" holds only up to that tie: our 62.86% is
+154/245, Yashvi's 58.27% is 155/266.
+
+Removed the 14 terms added from Fareez transcripts (ramipril, reactine,
+rosuvastatin, spiriva, ventilin, corticosteroids, cortico, steroid, steroids,
+opioids, coronavirus, clotting, rheumatological, antalgic) →
+`data/glossary/tiered_glossary_176.csv` (40 Tier 2, 136 Tier 3; same rows as
+the glossary at e30d20c). Re-aligned all 272 encounters into a new,
+git-ignored labels file; `word_level_labels_fareez.csv` untouched. Same
+glossary used for gold tiers and RiskAware's tier lookup.
+
+| Tier | 190 terms [95% CI] | 176 terms [95% CI] |
+|---|---|---|
+| 1 | 10.24% [9.88, 10.59] (356,873) | 10.26% [9.91, 10.61] (357,022) |
+| 2 | 24.33% [16.93, 31.96] (263) | 20.79% [13.66, 29.02] (178) |
+| 3 | 55.04% [49.73, 60.33] (367) | 47.19% [41.18, 52.82] (303) |
+
+Recall at 10% (hits; scorable / all critical errors; 190: 245/266,
+176: 171/180):
+
+| Ranking | 190 terms | 176 terms |
+|---|---|---|
+| raw confidence | 129; 52.65 / 48.50% | 88; 51.46 / 48.89% |
+| learned uncertainty | 134; 54.69 / 50.38% | 91; 53.22 / 50.56% |
+| RiskAware | 155; 63.27 / 58.27% | 100; 58.48 / 55.56% |
+
+- Tier ordering survives without the Fareez-derived terms; Tier 3 falls
+  55.04% → 47.19%.
+- RiskAware's lead over raw confidence at 10% shrinks from +9.77 pp to
+  +6.67 pp (all-errors denominator); part of its Fareez advantage comes from
+  terms taken from Fareez itself. No CI computed on these differences.
+- 5% and 20% budgets: `experiments/blockers/r1_recall.csv` and RESULTS.md.
+
+## 2026-10-25 — R2: production-ASR row re-run with the shared normalize()
+
+Resolves the 2026-10-05 KNOWN ISSUE. `src/eval/validate_real_asr.py` now
+imports `normalize`/`tokenize` from `align_and_label.py`; nothing else in the
+script changed. Re-run overwrote `data/processed/real_asr_word_labels.csv`.
+
+| | T1 / T2 / T3 | Gold words T1 / T2 / T3 |
+|---|---|---|
+| Old (stored; old normalize, 176-term glossary) | 2.23 / 1.75 / 1.33% | 129,883 / 228 / 528 |
+| New (edited script; new normalize, 190-term glossary) | 2.23 / 1.95 / 1.33% | 129,854 / 257 / 528 |
+
+105 encounters, 131,144 rows (130,639 gold words) in both.
+
+- The normalize() fix itself has zero effect: "ok" never occurs in either
+  text, only "okay" (4,386 tokens). With the glossary held fixed, old and
+  new normalize give identical output.
+- The Tier 2 change (4/228 → 5/257) comes entirely from the glossary
+  growing to 190 terms since the stored file was made. Tier3/Tier1 stays
+  0.6x (inverted); the three-way comparison's conclusion is unchanged.
+- Correction-module output on the re-run: 11 critical substitutions, 4
+  near-miss (top-1 100%), 7 dropout (top-1 1/7). Earlier this log recorded
+  4 / 6 (0%); the difference is the glossary, not normalize().
+- Figures not regenerated: `make_figures.py` does not read this file; fig5
+  hardcodes 2.2 / 1.8 / 1.3 (Tier 2 would be 1.9 under 190 terms).
+
+## 2026-10-25 — R3: ACI-Bench 5-fold recall, scorable vs. all critical errors
+
+Same folds/model as `scratch/cv_5fold_no_tier.py`. Critical errors per fold
+(scorable / all): 230/238, 208/209, 248/256, 220/220, 222/226 — 1,128 /
+1,149 total, 21 deletions. Mean ± sd over folds, current labels:
+
+| Ranking | Budget | Scorable | All |
+|---|---|---|---|
+| RiskAware | 5% | 43.24 ± 1.76% | 42.48 ± 1.76% |
+| RiskAware | 10% | 59.09 ± 2.74% | 58.06 ± 2.98% |
+| RiskAware | 20% | 77.52 ± 4.11% | 76.14 ± 3.52% |
+| raw confidence | 5% | 20.74 ± 2.99% | 20.37 ± 2.94% |
+| raw confidence | 10% | 46.93 ± 2.93% | 46.11 ± 3.11% |
+| raw confidence | 20% | 76.07 ± 4.02% | 74.73 ± 3.85% |
+
+- The CV script, and every ACI-Bench recall in this log, uses the
+  **scorable** denominator (rows with no ASR word are dropped first).
+  Stable vs. default tie-breaking gives identical results here.
+- The paper's 59.31% vs 47.27% (+12.04 pp, ROC-AUC 0.8535) could not be
+  reproduced. 47.27% matches raw-confidence recall on the
+  pre-normalize-fix labels (git 9d19693, scorable denominator), but that
+  same run gives RiskAware 58.29% and ROC-AUC 0.8534. No run (current or
+  pre-fix labels, either sort, either denominator) gives 59.31% or 0.8535.
+- Current, reproducible figures: 59.09% vs 46.93% (+12.16 pp, ROC-AUC
+  0.8525) scorable, or 58.06% vs 46.11% (+11.95 pp) over all critical
+  errors.
+
+## 2026-10-25 — R5: all tables regenerated with the 176-term glossary; Tier 2 attribution corrected
+
+`experiments/blockers/make_all_tables.py` regenerates every table in one run
+(git `2940b8d` + this branch's uncommitted changes) with the 176-term
+glossary as primary and the 190-term glossary as sensitivity; full tables in
+`experiments/blockers/RESULTS.md` / `r5_tables.md`. ACI-Bench synthetic
+tables start from the stored alignment with tiers re-derived per glossary
+(no ACI-Bench Whisper outputs are in the repo; re-tiering reproduces both
+stored tier columns exactly).
+
+| Table | 176 terms (primary) | 190 terms |
+|---|---|---|
+| ACI-Bench synthetic T1/T2/T3 | 12.54 / 67.36 / 90.17% (234,893 / 435 / 946) | 12.54 / 62.05 / 90.17% (234,851 / 477 / 946) |
+| ACI-Bench production ASR T1/T2/T3 | 2.23 / 1.75 / 1.33% (129,883 / 228 / 528) | 2.23 / 1.95 / 1.33% (129,854 / 257 / 528) |
+| ACI-Bench CV @10%, RiskAware vs raw, all crit. errors | 57.91 vs 46.13% (+11.78 ± 0.80 pp) | 58.01 vs 46.26% (+11.75 ± 0.77 pp) |
+| ACI-Bench CV @10%, RiskAware vs raw, scorable | 58.92 vs 46.93% (+12.00 ± 0.84 pp) | 59.03 vs 47.07% (+11.96 ± 0.81 pp) |
+| ACI-Bench CV ROC-AUC | 0.8525 ± 0.0040 | 0.8525 ± 0.0040 |
+| Fareez T1/T2/T3 | 10.26 / 20.79 / 47.19% | 10.24 / 24.33 / 55.04% |
+| Fareez @10%, RiskAware vs raw (all / scorable) | 55.56 vs 48.89% / 58.48 vs 51.46% | 58.27 vs 48.50% / 63.27 vs 52.65% |
+
+- CORRECTION to the 2026-09-23 entry: the ACI-Bench+TTS Tier 2 change
+  67.4% → 62.05% came from the glossary (176 → 190 terms), not from the
+  ok/okay normalize() fix. Tier 2 is 67.36% under 176 terms with both old
+  and new normalize(), and 62.05% under 190 terms with both. normalize()
+  does change the alignment (37,032 → 36,827 errors) but no Tier 2 word.
+  The earlier entry's "alignment boundary shift" explanation does not hold;
+  the labels were regenerated with the fix and the extended glossary at the
+  same time.
+- The paper's ACI-Bench 59.31% / 0.8535 could not be traced to any script
+  version. `scratch/cv_5fold_no_tier.py` has one version (9d19693); no
+  commit on any branch (incl. upstream PRs #3–#5) contains 59.31 / 0.8535 /
+  12.04 pp except the 2026-10-24 README lines. Running the script's exact
+  settings on both labels versions × both glossaries × both CSV readings
+  matches none; closest is pre-fix labels + 176 terms: 58.47% / 47.27% /
+  0.8534.
+- The ACI-Bench CV gain barely depends on the glossary (+11.78 vs +11.75 pp,
+  all errors); the Fareez gain does (+6.67 vs +9.77 pp, all errors, see R1).
