@@ -1,0 +1,4 @@
+method,reference,budget_pct,bootstrap_mean_gap_pp,ci_lower_pp,ci_upper_pp,resamples,seed
+RiskAware-ASR,Raw confidence,5,16.160600542787147,8.790500736377027,23.915866741953696,2000,42
+RiskAware-ASR,Raw confidence,10,6.36585920635715,-0.0,12.637520525451565,2000,42
+RiskAware-ASR,Raw confidence,20,1.8097107862386035,-1.0695187165775342,4.918234676572723,2000,42

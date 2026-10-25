@@ -1,0 +1,4 @@
+method,reference,budget_pct,bootstrap_mean_gap_pp,ci_lower_pp,ci_upper_pp,resamples,seed
+C1 Disagreement then RiskAware score,Disagreement + confidence,5,2.2572579993580786,-1.25,6.180560401981994,2000,42
+C1 Disagreement then RiskAware score,Disagreement + confidence,10,2.5465138026141987,0.0,5.128205128205124,2000,42
+C1 Disagreement then RiskAware score,Disagreement + confidence,20,0.0,0.0,0.0,2000,42
