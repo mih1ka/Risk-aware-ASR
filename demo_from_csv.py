@@ -1,6 +1,7 @@
 import pandas as pd
 
-FLAG_RISK_THRESHOLD = 0.839
+from src.pipeline.risk_pipeline import FLAG_RISK_THRESHOLD, explain_reason
+
 TIER_LABELS = {1: "everyday", 2: "clinical term", 3: "drug/dosage"}
 
 df = pd.read_csv("data/processed/risk_scores_explained.csv")
@@ -15,9 +16,8 @@ print(f"Encounter: {best_encounter}")
 print(f"Processed {len(enc)} words, flagged {len(flagged)} for review\n")
 
 for _, r in flagged.head(15).iterrows():
-    reason = (f"confidence={r['confidence']:.2f} (contributed {r['shap_confidence']:+.2f}), "
-              f"tier={TIER_LABELS.get(int(r['tier_whisper']), 'unknown')} "
-              f"(contributed {r['shap_tier_whisper']:+.2f})")
+    reason = explain_reason(r["confidence"], r["shap_confidence"], r["word_len"],
+                            r["shap_word_len"], int(r["tier_whisper"]), TIER_LABELS)
     print(f"'{r['whisper_word']}'  (gold: '{r['gold_word']}')  risk={r['risk_score']:.3f}  error_type={r['error_type']}")
     print(f"    reason: {reason}")
     print()

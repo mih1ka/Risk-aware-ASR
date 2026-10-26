@@ -5,3 +5,4 @@ __pycache__/
 data/audio/
 data/whisper_out/
 .DS_Store
+_claude_backup_before_demo_fix/

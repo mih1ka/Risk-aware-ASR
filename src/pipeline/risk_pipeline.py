@@ -7,19 +7,25 @@ import pandas as pd
 import xgboost as xgb
 import jellyfish
 
-MODEL_PATH = Path("models/uncertainty_xgb.joblib")
-GLOSSARY_PATH = Path("data/glossary/tiered_glossary.csv")
+# Same configuration as the ICSSAS paper: the tier-free classifier
+# (ASR confidence + word length only; glossary tier is NOT a model input and
+# enters only through the multiplicative weight) and the 176-term primary
+# glossary, which contains no vocabulary taken from the Fareez evaluation set.
+MODEL_PATH = Path("models/uncertainty_xgb_no_tier.joblib")
+GLOSSARY_PATH = Path("data/glossary/tiered_glossary_176.csv")
+FEATURE_NAMES = ["confidence", "word_len"]
 DICT_PATH = Path("/usr/share/dict/words")
 TIER_WEIGHTS = {1: 1.0, 2: 3.25, 3: 4.25}
 CORRECTION_THRESHOLD = 0.5
 
-# Fixed, data-calibrated flagging threshold (the top-10% operating point
-# measured on the held-out test set: precision 0.542, critical-error recall
-# 0.573). Deliberately NOT recomputed per-encounter — a per-input percentile
-# would always flag exactly the same fraction of words regardless of how
-# risky that encounter actually is.
-# Retrained model's 90th percentile is 0.8355 (0.839 flags 9.78% of words); threshold deliberately left at 0.839.
-FLAG_RISK_THRESHOLD = 0.839
+# Fixed, data-calibrated flagging threshold: the top-10% operating point of
+# the tier-free model on the 42 held-out ACI-Bench encounters
+# (src/model/explain_predictions.py; 90th percentile = 0.8382, flags 10.02% of
+# words, precision 0.535, critical-error recall 134/241 = 0.556 with the
+# 176-term glossary). Deliberately NOT recomputed per-encounter -- a
+# per-input percentile would always flag exactly the same fraction of words
+# regardless of how risky that encounter actually is.
+FLAG_RISK_THRESHOLD = 0.838
 
 
 def normalize(word):
@@ -76,6 +82,15 @@ def suggest_correction(word, candidates, dictionary, threshold=CORRECTION_THRESH
     return [term for term, _ in scored[:top_k]]
 
 
+def explain_reason(confidence, shap_conf, word_len, shap_len, tier, tier_labels):
+    """One-line explanation of a flag: the two model inputs' SHAP-style
+    contributions to learned uncertainty, then the criticality weight that
+    multiplies it."""
+    return (f"confidence={confidence:.2f} (contributed {shap_conf:+.2f}), "
+            f"length={int(word_len)} (contributed {shap_len:+.2f}), "
+            f"tier={tier_labels.get(tier, 'unknown')} (weight x{TIER_WEIGHTS[tier]:.2f})")
+
+
 class RiskAwareASRPipeline:
     def __init__(self):
         self.glossary = load_glossary()
@@ -84,7 +99,7 @@ class RiskAwareASRPipeline:
         self.candidates = list(self.glossary.keys())
         self.model = joblib.load(MODEL_PATH)
         self.booster = self.model.get_booster()
-        self.feature_names = ["confidence", "tier_whisper", "word_len"]
+        self.feature_names = FEATURE_NAMES
         self.tier_labels = {1: "everyday", 2: "clinical term", 3: "drug/dosage"}
 
     def score_words(self, words):
@@ -118,9 +133,9 @@ class RiskAwareASRPipeline:
 
             reason = None
             if row["flagged"]:
-                reason = (f"confidence={row['confidence']:.2f} (contributed {row['shap_confidence']:+.2f}), "
-                          f"tier={self.tier_labels.get(int(row['tier_whisper']), 'unknown')} "
-                          f"(contributed {row['shap_tier_whisper']:+.2f})")
+                reason = explain_reason(row["confidence"], row["shap_confidence"],
+                                        row["word_len"], row["shap_word_len"],
+                                        int(row["tier_whisper"]), self.tier_labels)
 
             action = "OK"
             if row["flagged"]:
